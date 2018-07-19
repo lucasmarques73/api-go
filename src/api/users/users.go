@@ -7,11 +7,11 @@ import (
 )
 
 type User struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-	Avatar string `json:"avatar"`
-	Email string `json:"email"`
-	Pass string `json:"-"`
+	Id int `db:"id" json:"id,omitempty"`
+	Name string `db:"name" json:"name,omitempty"`
+	Avatar string `db:"avatar" json:"avatar,omitempty"`
+	Email string `db:"email" json:"email,omitempty"`
+	Pass string `db:"pass" json:"-"`
 }
 
 var conStr = "host=db port=5432 user=go password=go dbname=go sslmode=disable"
