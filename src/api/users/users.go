@@ -25,9 +25,9 @@ func ListUsers() []User {
 	users := []User{}
 
 	for rows.Next(){
-		u := User{}
-		rows.Scan(&u.Id, &u.Name, &u.Avatar,&u.Email,&u.Pass)
-		users = append(users,u)
+		user := User{}
+		rows.Scan(&user.Id, &user.Name, &user.Avatar,&user.Email,&user.Pass)
+		users = append(users,user)
 	}
 
 	return users
@@ -36,10 +36,10 @@ func ListUsers() []User {
 func GetUserById(id string) User {
 	
 	row:= db.QueryRow("SELECT * FROM users WHERE id=?",id)
-	u := User{}
-	row.Scan(&u.Id, &u.Name, &u.Avatar,&u.Email,&u.Pass)
+	user := User{}
+	row.Scan(&user.Id, &user.Name, &user.Avatar,&user.Email,&user.Pass)
 	
-	return u
+	return user
 }
 
 func CreateUser(user User) User {
