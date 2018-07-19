@@ -1,0 +1,37 @@
+version: '3'
+volumes:
+  postgres-data:
+    driver: "local"
+services:
+  db:
+    image: postgres:10
+    container_name: api-go-db
+    ports:
+      - "5432:5432"
+    environment: 
+      - "POSTGRES_DB=${POSTGRES_DB}"
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    container_name: api-go-adminer
+    ports:
+      - "8080:8080"
+  # web:
+  #   build: ./docker
+  #   container_name: api-go-web
+  #   volumes: 
+  #     - ./src:/go/src
+  #   ports:
+  #     - "80:80"
+  web:
+    image: golang:1.10-alpine3.7
+    container_name: api-go-web
+    volumes: 
+      - ./src:/go/src
+    ports:
+      - "80:80"
+    working_dir: /go/src/api
+    command: go run main.go
