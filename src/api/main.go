@@ -8,16 +8,20 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"users"
+	"api/users"
+	"api/errors"
 )
 
 func main(){
+
 	routes := mux.NewRouter().StrictSlash(true)
 
 	routes.HandleFunc("/", Home)
 	routes.HandleFunc("/users", getAllUsers).Methods("GET")
 	routes.HandleFunc("/users", createUser).Methods("POST")
 	routes.HandleFunc("/users/{id}", getUser).Methods("GET")
+	// routes.HandleFunc("/users/{id}", getUser).Methods("PUT")
+	// routes.HandleFunc("/users/{id}", getUser).Methods("DELETE")
 
 	port := ":80"
 	fmt.Println("Server running in port:", port)
@@ -43,10 +47,10 @@ func createUser(w http.ResponseWriter, r *http.Request){
 	var u users.User
 	
 	body, err := ioutil.ReadAll(r.Body)
-	checkErr(err)
+	errors.CheckErr(err)
 
 	err = r.Body.Close()
-	checkErr(err)
+	errors.CheckErr(err)
 
 	json.Unmarshal(body, &u)
 
@@ -59,26 +63,4 @@ func getUser(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id := mux.Vars(r)["id"]
 	json.NewEncoder(w).Encode(users.GetUserById(id))
-}
-
-// func updateUser(w http.ResponseWriter, r *http.Request){
-// 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	
-// 	id := mux.Vars(r)["id"]
-
-// 	body, err := ioutil.ReadAll(r.Body)
-// 	checkErr(err)
-
-// 	err = r.Body.Close()
-// 	checkErr(err)
-
-// 	json.Unmarshal(body, &u)
-
-// 	json.NewEncoder(w).Encode(users.UpdateUser(u,id))
-// }
-
-func checkErr(err error) {
-	if err != nil {
-		panic(err)
-	}
 }
