@@ -1,22 +1,23 @@
 package main
 
 import (
+	"api/errors"
+	"api/users"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
-	"io/ioutil"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"api/users"
-	"api/errors"
+
+	"github.com/gorilla/mux"
 )
 
-func main(){
+func main() {
 
 	routes := mux.NewRouter().StrictSlash(true)
 
-	routes.HandleFunc("/", Home)
+	routes.HandleFunc("/", home)
 	routes.HandleFunc("/users", getAllUsers).Methods("GET")
 	routes.HandleFunc("/users", createUser).Methods("POST")
 	routes.HandleFunc("/users/{id}", getUser).Methods("GET")
@@ -28,24 +29,23 @@ func main(){
 	log.Fatal(http.ListenAndServe(port, routes))
 }
 
-
-func Home(w http.ResponseWriter, r *http.Request){
+func home(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("views/index.html"))
 	if err := t.ExecuteTemplate(w, "index.html", nil); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func getAllUsers(w http.ResponseWriter, r *http.Request){
+func getAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	json.NewEncoder(w).Encode(users.ListUsers())
 }
 
-func createUser(w http.ResponseWriter, r *http.Request){
+func createUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
 	var u users.User
-	
+
 	body, err := ioutil.ReadAll(r.Body)
 	errors.CheckErr(err)
 
@@ -59,7 +59,7 @@ func createUser(w http.ResponseWriter, r *http.Request){
 	json.NewEncoder(w).Encode(u)
 }
 
-func getUser(w http.ResponseWriter, r *http.Request){
+func getUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id := mux.Vars(r)["id"]
 	json.NewEncoder(w).Encode(users.GetUserById(id))
