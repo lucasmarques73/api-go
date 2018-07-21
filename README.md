@@ -3,5 +3,5 @@
 ## How to use
 
 - `git clone https://github.com/lucasmarques73/api-go.git`
-- `cp .env.example .env`
+- `docker-compose exec web go run db/db.go`
 - `docker-compose up`

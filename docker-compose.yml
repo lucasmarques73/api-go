@@ -14,20 +14,20 @@ services:
       - "POSTGRES_PASSWORD=go"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./docker/db:/scripts
-      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
   adminer:
     image: adminer
     container_name: api-go-adminer
     ports:
       - "8080:8080"
   # web:
-  #   build: ./docker
+  #   build: .
   #   container_name: api-go-web
   #   volumes: 
   #     - ./src:/go/src
   #   ports:
   #     - "80:80"
+  #   depends_on:
+  #     - db
   web:
     image: golang:1.10-alpine3.7
     container_name: api-go-web
@@ -37,3 +37,5 @@ services:
       - "80:80"
     working_dir: /go/src/api
     command: go run main.go
+    depends_on:
+      - db
