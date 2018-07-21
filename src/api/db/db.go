@@ -77,7 +77,7 @@ func widgetsTableSeed(db *sql.DB) {
 	for index := 0; index < 5; index++ {
 		name := fake.FullName()
 		color := fake.Color()
-		price := strconv.FormatFloat(randomdata.Decimal(100), 'E', -1, 64)
+		price := strconv.FormatFloat(randomdata.Decimal(100), 'E', 2, 64)
 		melts := strconv.FormatBool(randomdata.Boolean())
 		inventory := strconv.Itoa(randomdata.Number(50))
 

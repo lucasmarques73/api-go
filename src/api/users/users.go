@@ -3,7 +3,6 @@ package users
 import (
 	"api/errors"
 	"database/sql"
-	"strconv"
 
 	_ "github.com/lib/pq"
 )
@@ -35,9 +34,9 @@ func ListUsers() []User {
 	return users
 }
 
-func GetUserById(idS string) User {
-	id, _ := strconv.Atoi(idS)
-	row := db.QueryRow("SELECT * FROM users WHERE id = ?", id)
+func GetUserById(id string) User {
+
+	row := db.QueryRow("SELECT * FROM users WHERE id =" + id)
 	user := User{}
 	row.Scan(&user.ID, &user.Name, &user.Avatar, &user.Email, &user.Pass)
 
@@ -48,7 +47,7 @@ func CreateUser(user User) User {
 	return user
 }
 
-func UpdateUser(user User, idS string) User {
+func UpdateUser(user User, id string) User {
 	return user
 }
 

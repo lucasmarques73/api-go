@@ -3,7 +3,6 @@ package widgets
 import (
 	"api/errors"
 	"database/sql"
-	"strconv"
 
 	_ "github.com/lib/pq"
 )
@@ -35,9 +34,9 @@ func ListWidgets() []Widget {
 
 	return widgets
 }
-func GetWidgetById(idS string) Widget {
-	id, _ := strconv.Atoi(idS)
-	row := db.QueryRow("SELECT * FROM widgets WHERE id = ?", id)
+func GetWidgetById(id string) Widget {
+
+	row := db.QueryRow("SELECT * FROM widgets WHERE id =" + id)
 	widget := Widget{}
 	row.Scan(&widget.ID, &widget.Name, &widget.Color, &widget.Price, &widget.Melts, &widget.Inventory)
 
