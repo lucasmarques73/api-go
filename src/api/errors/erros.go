@@ -1,7 +1,9 @@
 package errors
 
+import "log"
+
 func CheckErr(err error) {
 	if err != nil {
-		panic(err)
+		log.Fatal(err.Error())
 	}
 }
