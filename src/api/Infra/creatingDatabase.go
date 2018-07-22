@@ -33,10 +33,11 @@ var usersTableSeedSQL = `INSERT INTO users (name,avatar,email,pass) VALUES (?,?,
 var widgetsTableSeedSQL = `INSERT INTO widgets (name,color,price,melts,inventory) VALUES (?,?,?,?,?)`
 
 func main() {
-	var dbSettings Db.DbSettings
-	dbSettings = Db.GetEnvData(dbSettings)
 
-	var conStr = "host=" + dbSettings.dbHost + " port=" + dbSettings.dbPort + " user=" + dbSettings.dbUser + " password=" + dbSettings.dbPassword + " dbname=" + dbSettings.dbName + " sslmode=disable"
+	var ds Db.DbSettings
+	ds = Db.GetEnvData(ds)
+
+	var conStr = "host=" + ds.DbHost + " port=" + ds.DbPort + " user=" + ds.DbUser + " password=" + ds.DbPassword + " dbname=" + ds.DbName + " sslmode=disable"
 	var db, err = sql.Open("postgres", conStr)
 	Errors.CheckErr(err)
 

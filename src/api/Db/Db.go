@@ -12,37 +12,37 @@ import (
 
 // DbSettings app
 type DbSettings struct {
-	dbUser     string
-	dbPassword string
-	dbName     string
-	dbHost     string
-	dbPort     string
+	DbUser     string
+	DbPassword string
+	DbName     string
+	DbHost     string
+	DbPort     string
 }
 
 // DbSettings app
 var dbSettings DbSettings
 
-func GetEnvData(dbSettings DbSettings) DbSettings {
+func GetEnvData(ds DbSettings) DbSettings {
 
 	err := godotenv.Load()
 	Errors.CheckErr(err)
 
 	if host := os.Getenv("DB_HOST"); len(host) > 0 {
-		dbSettings.dbHost = host
+		ds.DbHost = host
 	}
 	if database := os.Getenv("DB_DATABASE"); len(database) > 0 {
-		dbSettings.dbName = database
+		ds.DbName = database
 	}
 	if user := os.Getenv("DB_USER"); len(user) > 0 {
-		dbSettings.dbUser = user
+		ds.DbUser = user
 	}
 	if password := os.Getenv("DB_PASSWORD"); len(password) > 0 {
-		dbSettings.dbPassword = password
+		ds.DbPassword = password
 	}
 	if port := os.Getenv("DB_PORT"); len(port) > 0 {
-		dbSettings.dbPort = port
+		ds.DbPort = port
 	}
-	return dbSettings
+	return ds
 }
 
 // Sess Database connection
@@ -54,10 +54,10 @@ func init() {
 	dbSettings = GetEnvData(dbSettings)
 
 	var settings = postgresql.ConnectionURL{
-		User:     dbSettings.dbUser,
-		Password: dbSettings.dbPassword,
-		Host:     dbSettings.dbHost,
-		Database: dbSettings.dbName,
+		User:     dbSettings.DbUser,
+		Password: dbSettings.DbPassword,
+		Host:     dbSettings.DbHost,
+		Database: dbSettings.DbName,
 	}
 
 	Sess, err = postgresql.Open(settings)
