@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/Errors"
 	"database/sql"
 	"fmt"
 	"strconv"
