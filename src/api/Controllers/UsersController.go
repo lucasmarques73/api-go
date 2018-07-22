@@ -3,6 +3,7 @@ package Controllers
 import (
 	"api/Errors"
 	"api/Models"
+	"api/Services/PasswordService"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -63,6 +64,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&user)
 
 	e := Models.UsersModel.Find("email", user.Email)
+
+	passEncrypt, _ := PasswordService.Encrypt(user.Pass)
+
+	user.Pass = passEncrypt
 
 	if count, _ := e.Count(); count > 0 {
 		w.WriteHeader(http.StatusBadRequest)

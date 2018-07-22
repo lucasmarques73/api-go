@@ -3,6 +3,7 @@ package main
 import (
 	"api/Db"
 	"api/Errors"
+	"api/Services/PasswordService"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -70,7 +71,7 @@ func usersTableSeed(db *sql.DB) {
 		name := fake.FullName()
 		avatar := "https://loremflickr.com/320/240/cats"
 		email := fake.EmailAddress()
-		pass := fake.SimplePassword()
+		pass, _ := PasswordService.Encrypt("secret")
 
 		exec(db, "INSERT INTO users (name,avatar,email,pass) VALUES ('"+name+"','"+avatar+"','"+email+"','"+pass+"')")
 
