@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// GetAllUsers -  Listing all users
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	var users []Models.User
@@ -30,6 +31,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetUser - Listing a user
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	idS := mux.Vars(r)["id"]
@@ -56,6 +58,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CreateUser - Creating a user
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	var user Models.User
@@ -88,6 +91,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// UpdateUser - Updating a user
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
@@ -135,6 +139,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteUser - Deleting a user
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])

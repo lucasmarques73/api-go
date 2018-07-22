@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// GetAllWidgets -  Listing all widgets
 func GetAllWidgets(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	var widgets []Models.Widget
@@ -30,6 +31,7 @@ func GetAllWidgets(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetWidget - Listing a widget
 func GetWidget(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	idS := mux.Vars(r)["id"]
@@ -56,6 +58,7 @@ func GetWidget(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CreateWidget - Creating a widget
 func CreateWidget(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	var widget Models.Widget
@@ -88,6 +91,7 @@ func CreateWidget(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// UpdateWidget - Updating a widget
 func UpdateWidget(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
@@ -135,6 +139,7 @@ func UpdateWidget(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteWidget - Deleting a widget
 func DeleteWidget(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
