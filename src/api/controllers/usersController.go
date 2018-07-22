@@ -37,9 +37,11 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var u models.User
 	_ = json.NewDecoder(r.Body).Decode(&u)
 
-	u, err := models.CreateUser(u)
-	errors.CheckErr(err)
-
+	if _, err := models.UsersModel.Insert(u); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		errors.CheckErr(err)
+	}
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(u)
 }
 
