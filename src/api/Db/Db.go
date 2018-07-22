@@ -1,4 +1,4 @@
-package db
+package Db
 
 import (
 	"api/Errors"
@@ -22,7 +22,7 @@ func init() {
 	var err error
 
 	Sess, err = postgresql.Open(settings)
-	errors.CheckErr(err)
+	Errors.CheckErr(err)
 	Sess.SetLogging(true)
 
 	fmt.Println("Database successfully connected")

@@ -12,18 +12,18 @@ import (
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	var users []models.User
-	if err := models.UsersModel.Find().All(&users); err != nil {
+	var users []Models.User
+	if err := Models.UsersModel.Find().All(&users); err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{
-			"errors":  strconv.FormatBool(true),
+			"error":   strconv.FormatBool(true),
 			"data":    "",
 			"message": "Users not found",
 		})
 	} else {
 		data, _ := json.Marshal(users)
 		json.NewEncoder(w).Encode(map[string]string{
-			"errors":  strconv.FormatBool(false),
+			"error":   strconv.FormatBool(false),
 			"data":    string(data),
 			"message": "List of all users",
 		})
@@ -35,8 +35,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	idS := mux.Vars(r)["id"]
 	id, _ := strconv.Atoi(idS)
 
-	var user models.User
-	res := models.UsersModel.Find(id)
+	var user Models.User
+	res := Models.UsersModel.Find(id)
 	err := res.One(&user)
 
 	if err != nil {
@@ -58,10 +58,10 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	var user models.User
+	var user Models.User
 	_ = json.NewDecoder(r.Body).Decode(&user)
 
-	e := models.UsersModel.Find("email", user.Email)
+	e := Models.UsersModel.Find("email", user.Email)
 
 	if count, _ := e.Count(); count > 0 {
 		w.WriteHeader(http.StatusBadRequest)
@@ -71,9 +71,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 			"message": "The email field must be unique",
 		})
 	} else {
-		if res, err := models.UsersModel.Insert(user); err != nil {
+		if res, err := Models.UsersModel.Insert(user); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			errors.CheckErr(err)
+			Errors.CheckErr(err)
 		} else {
 			user.ID = res.(int64)
 			w.WriteHeader(http.StatusCreated)
@@ -92,8 +92,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 
-	var user models.User
-	res := models.UsersModel.Find(id)
+	var user Models.User
+	res := Models.UsersModel.Find(id)
 	err := res.One(&user)
 
 	if err != nil {
@@ -108,9 +108,9 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 		// Validate duplicate email
 		// eid Email and ID
-		e := models.UsersModel.Find("email", user.Email)
+		e := Models.UsersModel.Find("email", user.Email)
 		count, _ := e.Count()
-		var eid models.User
+		var eid Models.User
 		e.One(&eid)
 		if count > 0 && user.ID != eid.ID {
 			w.WriteHeader(http.StatusBadRequest)
@@ -122,7 +122,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		} else {
 			if err = res.Update(user); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
-				errors.CheckErr(err)
+				Errors.CheckErr(err)
 			} else {
 				data, _ := json.Marshal(user)
 				json.NewEncoder(w).Encode(map[string]string{
@@ -139,8 +139,8 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 
-	var user models.User
-	res := models.UsersModel.Find(id)
+	var user Models.User
+	res := Models.UsersModel.Find(id)
 	err := res.One(&user)
 
 	if err != nil {
@@ -155,7 +155,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 		if err = res.Delete(); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			errors.CheckErr(err)
+			Errors.CheckErr(err)
 		} else {
 			data, _ := json.Marshal(user)
 			json.NewEncoder(w).Encode(map[string]string{

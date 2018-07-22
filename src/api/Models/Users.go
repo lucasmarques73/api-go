@@ -1,4 +1,4 @@
-package models
+package Models
 
 import "api/Db"
 
@@ -12,4 +12,4 @@ type User struct {
 }
 
 // UsersModel Ppinting to the "users" table
-var UsersModel = db.Sess.Collection("users")
+var UsersModel = Db.Sess.Collection("users")

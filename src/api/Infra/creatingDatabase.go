@@ -1,7 +1,6 @@
 package main
 
 import (
-	"api/errors"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -34,7 +33,7 @@ var widgetsTableSeedSQL = `INSERT INTO widgets (name,color,price,melts,inventory
 func main() {
 	var conStr = "host=db port=5432 user=go password=go dbname=go sslmode=disable"
 	var db, err = sql.Open("postgres", conStr)
-	errors.CheckErr(err)
+	Errors.CheckErr(err)
 
 	createTableUsers(db)
 	createTableWidgets(db)
@@ -47,7 +46,7 @@ func main() {
 
 func exec(db *sql.DB, sql string) sql.Result {
 	result, err := db.Exec(sql)
-	errors.CheckErr(err)
+	Errors.CheckErr(err)
 	return result
 }
 

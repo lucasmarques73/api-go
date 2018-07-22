@@ -1,4 +1,4 @@
-package models
+package Models
 
 import "api/Db"
 
@@ -13,4 +13,4 @@ type Widget struct {
 }
 
 // WidgetsModel Ppinting to the "widgets" table
-var WidgetsModel = db.Sess.Collection("widgets")
+var WidgetsModel = Db.Sess.Collection("widgets")

@@ -12,18 +12,18 @@ import (
 
 func GetAllWidgets(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	var widgets []models.Widget
-	if err := models.WidgetsModel.Find().All(&widgets); err != nil {
+	var widgets []Models.Widget
+	if err := Models.WidgetsModel.Find().All(&widgets); err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{
-			"errors":  strconv.FormatBool(true),
+			"error":   strconv.FormatBool(true),
 			"data":    "",
 			"message": "Wigets not found",
 		})
 	} else {
 		data, _ := json.Marshal(widgets)
 		json.NewEncoder(w).Encode(map[string]string{
-			"errors":  strconv.FormatBool(false),
+			"error":   strconv.FormatBool(false),
 			"data":    string(data),
 			"message": "List of all wigets",
 		})
@@ -35,8 +35,8 @@ func GetWidget(w http.ResponseWriter, r *http.Request) {
 	idS := mux.Vars(r)["id"]
 	id, _ := strconv.Atoi(idS)
 
-	var widget models.Widget
-	res := models.WidgetsModel.Find(id)
+	var widget Models.Widget
+	res := Models.WidgetsModel.Find(id)
 	err := res.One(&widget)
 
 	if err != nil {
@@ -58,10 +58,10 @@ func GetWidget(w http.ResponseWriter, r *http.Request) {
 
 func CreateWidget(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	var widget models.Widget
+	var widget Models.Widget
 	_ = json.NewDecoder(r.Body).Decode(&widget)
 
-	n := models.WidgetsModel.Find("name", widget.Name)
+	n := Models.WidgetsModel.Find("name", widget.Name)
 
 	if count, _ := n.Count(); count > 0 {
 		w.WriteHeader(http.StatusBadRequest)
@@ -71,9 +71,9 @@ func CreateWidget(w http.ResponseWriter, r *http.Request) {
 			"message": "The name field must be unique",
 		})
 	} else {
-		if res, err := models.WidgetsModel.Insert(widget); err != nil {
+		if res, err := Models.WidgetsModel.Insert(widget); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			errors.CheckErr(err)
+			Errors.CheckErr(err)
 		} else {
 			widget.ID = res.(int64)
 			w.WriteHeader(http.StatusCreated)
@@ -92,8 +92,8 @@ func UpdateWidget(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 
-	var widget models.Widget
-	res := models.WidgetsModel.Find(id)
+	var widget Models.Widget
+	res := Models.WidgetsModel.Find(id)
 	err := res.One(&widget)
 
 	if err != nil {
@@ -108,9 +108,9 @@ func UpdateWidget(w http.ResponseWriter, r *http.Request) {
 
 		// Validate duplicate name
 		// nid is Name and ID
-		n := models.WidgetsModel.Find("name", widget.Name)
+		n := Models.WidgetsModel.Find("name", widget.Name)
 		count, _ := n.Count()
-		var nid models.Widget
+		var nid Models.Widget
 		n.One(&nid)
 		if count > 0 && widget.ID != nid.ID {
 			w.WriteHeader(http.StatusBadRequest)
@@ -122,7 +122,7 @@ func UpdateWidget(w http.ResponseWriter, r *http.Request) {
 		} else {
 			if err = res.Update(widget); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
-				errors.CheckErr(err)
+				Errors.CheckErr(err)
 			} else {
 				data, _ := json.Marshal(widget)
 				json.NewEncoder(w).Encode(map[string]string{
@@ -139,8 +139,8 @@ func DeleteWidget(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 
-	var widget models.Widget
-	res := models.WidgetsModel.Find(id)
+	var widget Models.Widget
+	res := Models.WidgetsModel.Find(id)
 	err := res.One(&widget)
 
 	if err != nil {
@@ -155,7 +155,7 @@ func DeleteWidget(w http.ResponseWriter, r *http.Request) {
 
 		if err = res.Delete(); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			errors.CheckErr(err)
+			Errors.CheckErr(err)
 		} else {
 			data, _ := json.Marshal(widget)
 			json.NewEncoder(w).Encode(map[string]string{
