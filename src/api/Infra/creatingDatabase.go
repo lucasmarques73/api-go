@@ -1,12 +1,13 @@
 package main
 
 import (
+	"api/Db"
 	"api/Errors"
 	"database/sql"
 	"fmt"
 	"strconv"
 
-	"github.com/Pallinder/go-randomdata"
+	randomdata "github.com/Pallinder/go-randomdata"
 	"github.com/icrowley/fake"
 	_ "github.com/lib/pq"
 )
@@ -32,7 +33,10 @@ var usersTableSeedSQL = `INSERT INTO users (name,avatar,email,pass) VALUES (?,?,
 var widgetsTableSeedSQL = `INSERT INTO widgets (name,color,price,melts,inventory) VALUES (?,?,?,?,?)`
 
 func main() {
-	var conStr = "host=db port=5432 user=go password=go dbname=go sslmode=disable"
+	var dbSettings Db.DbSettings
+	dbSettings = Db.GetEnvData(dbSettings)
+
+	var conStr = "host=" + dbSettings.dbHost + " port=" + dbSettings.dbPort + " user=" + dbSettings.dbUser + " password=" + dbSettings.dbPassword + " dbname=" + dbSettings.dbName + " sslmode=disable"
 	var db, err = sql.Open("postgres", conStr)
 	Errors.CheckErr(err)
 
