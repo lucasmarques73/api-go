@@ -16,17 +16,16 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	var users []Models.User
 	if err := Models.UsersModel.Find().All(&users); err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(true),
-			"data":    "",
-			"message": "Users not found",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "Users not found",
 		})
 	} else {
-		data, _ := json.Marshal(users)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(false),
-			"data":    string(data),
-			"message": "List of all users",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  false,
+			Data:    users,
+			Message: "List of all users",
 		})
 	}
 }
@@ -43,17 +42,16 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(true),
-			"data":    "",
-			"message": "User not found",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "User not found",
 		})
 	} else {
-		data, _ := json.Marshal(user)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(false),
-			"data":    string(data),
-			"message": "User data of id " + idS,
+		json.NewEncoder(w).Encode(Response{
+			Errors:  false,
+			Data:    user,
+			Message: "User data of id " + idS,
 		})
 	}
 }
@@ -68,10 +66,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	if count, _ := e.Count(); count > 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(true),
-			"data":    "",
-			"message": "The email field must be unique",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "The email field must be unique",
 		})
 	} else {
 		if res, err := Models.UsersModel.Insert(user); err != nil {
@@ -80,11 +78,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		} else {
 			user.ID = res.(int64)
 			w.WriteHeader(http.StatusCreated)
-			data, _ := json.Marshal(user)
-			json.NewEncoder(w).Encode(map[string]string{
-				"error":   strconv.FormatBool(false),
-				"data":    string(data),
-				"message": "User created",
+			json.NewEncoder(w).Encode(Response{
+				Errors:  false,
+				Data:    user,
+				Message: "User created",
 			})
 		}
 	}
@@ -102,10 +99,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(true),
-			"data":    "",
-			"message": "User not found",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "User not found",
 		})
 	} else {
 		_ = json.NewDecoder(r.Body).Decode(&user)
@@ -119,21 +116,20 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 		if count > 0 && user.ID != eid.ID {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(map[string]string{
-				"error":   strconv.FormatBool(true),
-				"data":    "",
-				"message": "The email field must be unique",
+			json.NewEncoder(w).Encode(Response{
+				Errors:  true,
+				Data:    "",
+				Message: "The email field must be unique",
 			})
 		} else {
 			if err = res.Update(user); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				Errors.CheckErr(err)
 			} else {
-				data, _ := json.Marshal(user)
-				json.NewEncoder(w).Encode(map[string]string{
-					"error":   strconv.FormatBool(false),
-					"data":    string(data),
-					"message": "User updated",
+				json.NewEncoder(w).Encode(Response{
+					Errors:  false,
+					Data:    user,
+					Message: "User updated",
 				})
 			}
 		}
@@ -151,10 +147,10 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(false),
-			"data":    "",
-			"message": "User not found",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  false,
+			Data:    "",
+			Message: "User not found",
 		})
 	} else {
 		_ = json.NewDecoder(r.Body).Decode(&user)
@@ -163,11 +159,10 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			Errors.CheckErr(err)
 		} else {
-			data, _ := json.Marshal(user)
-			json.NewEncoder(w).Encode(map[string]string{
-				"error":   strconv.FormatBool(false),
-				"data":    string(data),
-				"message": "User deleted",
+			json.NewEncoder(w).Encode(Response{
+				Errors:  false,
+				Data:    user,
+				Message: "User deleted",
 			})
 		}
 	}

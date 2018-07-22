@@ -16,17 +16,16 @@ func GetAllWidgets(w http.ResponseWriter, r *http.Request) {
 	var widgets []Models.Widget
 	if err := Models.WidgetsModel.Find().All(&widgets); err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(true),
-			"data":    "",
-			"message": "Wigets not found",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "Wigets not found",
 		})
 	} else {
-		data, _ := json.Marshal(widgets)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(false),
-			"data":    string(data),
-			"message": "List of all wigets",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  false,
+			Data:    widgets,
+			Message: "List of all wigets",
 		})
 	}
 }
@@ -43,17 +42,16 @@ func GetWidget(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(true),
-			"data":    "",
-			"message": "Widget not found",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "Widget not found",
 		})
 	} else {
-		data, _ := json.Marshal(widget)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(false),
-			"data":    string(data),
-			"message": "Widget data of id " + idS,
+		json.NewEncoder(w).Encode(Response{
+			Errors:  false,
+			Data:    widget,
+			Message: "Widget data of id " + idS,
 		})
 	}
 }
@@ -68,10 +66,10 @@ func CreateWidget(w http.ResponseWriter, r *http.Request) {
 
 	if count, _ := n.Count(); count > 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(true),
-			"data":    "",
-			"message": "The name field must be unique",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "The name field must be unique",
 		})
 	} else {
 		if res, err := Models.WidgetsModel.Insert(widget); err != nil {
@@ -80,11 +78,10 @@ func CreateWidget(w http.ResponseWriter, r *http.Request) {
 		} else {
 			widget.ID = res.(int64)
 			w.WriteHeader(http.StatusCreated)
-			data, _ := json.Marshal(widget)
-			json.NewEncoder(w).Encode(map[string]string{
-				"error":   strconv.FormatBool(false),
-				"data":    string(data),
-				"message": "Widget created",
+			json.NewEncoder(w).Encode(Response{
+				Errors:  false,
+				Data:    widget,
+				Message: "Widget created",
 			})
 		}
 	}
@@ -102,10 +99,10 @@ func UpdateWidget(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(true),
-			"data":    "",
-			"message": "Widget not found",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "Widget not found",
 		})
 	} else {
 		_ = json.NewDecoder(r.Body).Decode(&widget)
@@ -118,21 +115,20 @@ func UpdateWidget(w http.ResponseWriter, r *http.Request) {
 		n.One(&nid)
 		if count > 0 && widget.ID != nid.ID {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(map[string]string{
-				"error":   strconv.FormatBool(true),
-				"data":    "",
-				"message": "The name field must be unique",
+			json.NewEncoder(w).Encode(Response{
+				Errors:  true,
+				Data:    "",
+				Message: "The name field must be unique",
 			})
 		} else {
 			if err = res.Update(widget); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				Errors.CheckErr(err)
 			} else {
-				data, _ := json.Marshal(widget)
-				json.NewEncoder(w).Encode(map[string]string{
-					"error":   strconv.FormatBool(false),
-					"data":    string(data),
-					"message": "User updated",
+				json.NewEncoder(w).Encode(Response{
+					Errors:  false,
+					Data:    widget,
+					Message: "User updated",
 				})
 			}
 		}
@@ -150,10 +146,10 @@ func DeleteWidget(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{
-			"error":   strconv.FormatBool(false),
-			"data":    "",
-			"message": "Widget not found",
+		json.NewEncoder(w).Encode(Response{
+			Errors:  false,
+			Data:    "",
+			Message: "Widget not found",
 		})
 	} else {
 		_ = json.NewDecoder(r.Body).Decode(&widget)
@@ -162,11 +158,10 @@ func DeleteWidget(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			Errors.CheckErr(err)
 		} else {
-			data, _ := json.Marshal(widget)
-			json.NewEncoder(w).Encode(map[string]string{
-				"error":   strconv.FormatBool(false),
-				"data":    string(data),
-				"message": "Widget deleted",
+			json.NewEncoder(w).Encode(Response{
+				Errors:  false,
+				Data:    widget,
+				Message: "Widget deleted",
 			})
 		}
 	}
