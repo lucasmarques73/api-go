@@ -116,6 +116,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		count, _ := e.Count()
 		var eid Models.User
 		e.One(&eid)
+
 		if count > 0 && user.ID != eid.ID {
 			w.WriteHeader(http.StatusBadRequest)
 			json.NewEncoder(w).Encode(map[string]string{
