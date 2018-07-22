@@ -4,6 +4,7 @@ import (
 	"api/Errors"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 	db "upper.io/db.v3"
@@ -17,11 +18,10 @@ type DbSettings struct {
 	DbName     string
 	DbHost     string
 	DbPort     string
+	DbLogging  bool
 }
 
-// DbSettings app
-var dbSettings DbSettings
-
+//GetEnvData -  Func to Get dot env data
 func GetEnvData(ds DbSettings) DbSettings {
 
 	err := godotenv.Load()
@@ -42,6 +42,9 @@ func GetEnvData(ds DbSettings) DbSettings {
 	if port := os.Getenv("DB_PORT"); len(port) > 0 {
 		ds.DbPort = port
 	}
+	if logging := os.Getenv("DB_LOGGING"); len(logging) > 0 {
+		ds.DbLogging, _ = strconv.ParseBool(logging)
+	}
 	return ds
 }
 
@@ -50,7 +53,7 @@ var Sess db.Database
 
 func init() {
 	var err error
-
+	var dbSettings DbSettings
 	dbSettings = GetEnvData(dbSettings)
 
 	var settings = postgresql.ConnectionURL{
@@ -62,7 +65,7 @@ func init() {
 
 	Sess, err = postgresql.Open(settings)
 	Errors.CheckErr(err)
-	Sess.SetLogging(true)
+	Sess.SetLogging(dbSettings.DbLogging)
 
 	fmt.Println("Database successfully connected")
 }
