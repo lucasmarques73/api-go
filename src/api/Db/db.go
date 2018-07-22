@@ -1,7 +1,7 @@
 package db
 
 import (
-	"api/errors"
+	"api/Errors"
 	"fmt"
 
 	"upper.io/db.v3"
@@ -23,6 +23,7 @@ func init() {
 
 	Sess, err = postgresql.Open(settings)
 	errors.CheckErr(err)
+	Sess.SetLogging(true)
 
 	fmt.Println("Database successfully connected")
 }

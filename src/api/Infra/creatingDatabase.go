@@ -25,7 +25,7 @@ var createTableWidgetsSQL = `CREATE TABLE IF NOT EXISTS widgets (
     color VARCHAR(50),
     price NUMERIC,
     melts BOOLEAN,
-    inventory INT
+    inventory INT NOT NULL
 )`
 
 var usersTableSeedSQL = `INSERT INTO users (name,avatar,email,pass) VALUES (?,?,?,?)`

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/Controllers"
 	"fmt"
 	"html/template"
 	"log"
@@ -14,11 +15,11 @@ func main() {
 	routes := mux.NewRouter().StrictSlash(true)
 
 	routes.HandleFunc("/", home)
-	// routes.HandleFunc("/users", controllers.GetAllUsers).Methods("GET")
-	// routes.HandleFunc("/users", controllers.CreateUser).Methods("POST")
-	// routes.HandleFunc("/users/{id}", controllers.GetUser).Methods("GET")
-	// routes.HandleFunc("/users/{id}", controllers.UpdateUser).Methods("PUT")
-	// routes.HandleFunc("/users/{id}", controllers.DeleteUser).Methods("DELETE")
+	routes.HandleFunc("/users", controllers.GetAllUsers).Methods("GET")
+	routes.HandleFunc("/users", controllers.CreateUser).Methods("POST")
+	routes.HandleFunc("/users/{id}", controllers.GetUser).Methods("GET")
+	routes.HandleFunc("/users/{id}", controllers.UpdateUser).Methods("PUT")
+	routes.HandleFunc("/users/{id}", controllers.DeleteUser).Methods("DELETE")
 
 	// routes.HandleFunc("/widgets", controllers.getAllWidgets).Methods("GET")
 	// routes.HandleFunc("/widgets", controllers.createWidget).Methods("POST")
