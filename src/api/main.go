@@ -21,11 +21,11 @@ func main() {
 	routes.HandleFunc("/users/{id}", controllers.UpdateUser).Methods("PUT")
 	routes.HandleFunc("/users/{id}", controllers.DeleteUser).Methods("DELETE")
 
-	// routes.HandleFunc("/widgets", controllers.getAllWidgets).Methods("GET")
-	// routes.HandleFunc("/widgets", controllers.createWidget).Methods("POST")
-	// routes.HandleFunc("/widgets/{id}", controllers.getWidget).Methods("GET")
-	// routes.HandleFunc("/widgets/{id}", controllers.getUser).Methods("PUT")
-	// routes.HandleFunc("/widgets/{id}", controllers.getUser).Methods("DELETE")
+	routes.HandleFunc("/widgets", controllers.GetAllWidgets).Methods("GET")
+	routes.HandleFunc("/widgets", controllers.CreateWidget).Methods("POST")
+	routes.HandleFunc("/widgets/{id}", controllers.GetWidget).Methods("GET")
+	routes.HandleFunc("/widgets/{id}", controllers.UpdateWidget).Methods("PUT")
+	routes.HandleFunc("/widgets/{id}", controllers.DeleteWidget).Methods("DELETE")
 
 	port := ":80"
 	fmt.Println("Server running in port:", port)

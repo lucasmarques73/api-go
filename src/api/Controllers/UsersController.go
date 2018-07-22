@@ -68,7 +68,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]string{
 			"error":   strconv.FormatBool(true),
 			"data":    "",
-			"message": "The email fild must be unique",
+			"message": "The email field must be unique",
 		})
 	} else {
 		if res, err := models.UsersModel.Insert(user); err != nil {
@@ -107,6 +107,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewDecoder(r.Body).Decode(&user)
 
 		// Validate duplicate email
+		// eid Email and ID
 		e := models.UsersModel.Find("email", user.Email)
 		count, _ := e.Count()
 		var eid models.User
@@ -116,7 +117,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]string{
 				"error":   strconv.FormatBool(true),
 				"data":    "",
-				"message": "The email fild must be unique",
+				"message": "The email field must be unique",
 			})
 		} else {
 			if err = res.Update(user); err != nil {
@@ -147,7 +148,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]string{
 			"error":   strconv.FormatBool(false),
 			"data":    "",
-			"message": "user not found",
+			"message": "User not found",
 		})
 	} else {
 		_ = json.NewDecoder(r.Body).Decode(&user)

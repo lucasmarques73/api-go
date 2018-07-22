@@ -21,7 +21,7 @@ var createTableUsersSQL = `CREATE TABLE IF NOT EXISTS users (
 
 var createTableWidgetsSQL = `CREATE TABLE IF NOT EXISTS widgets (
     id SERIAL NOT NULL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL UNIQUE,
     color VARCHAR(50),
     price NUMERIC,
     melts BOOLEAN,

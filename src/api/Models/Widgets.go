@@ -4,7 +4,7 @@ import "api/Db"
 
 // Widget struct of table widgets
 type Widget struct {
-	ID        int     `db:"id,omitempty" json:"id,omitempty"`
+	ID        int64   `db:"id,omitempty" json:"id,omitempty"`
 	Name      string  `validate:"required" db:"name" json:"name,omitempty"`
 	Color     string  `db:"color" json:"color,omitempty"`
 	Price     float64 `db:"price" json:"price,omitempty"`
