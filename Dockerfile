@@ -10,7 +10,7 @@ ADD .env /go/src/api/.env
 
 WORKDIR /go/src/api
 
-RUN go get -u github.com/golang/dep/cmd/dep
+RUN go get -u -v -fix github.com/golang/dep/cmd/dep
 
 RUN dep status && dep ensure
 
