@@ -21,13 +21,15 @@ func GetAllWidgets(w http.ResponseWriter, r *http.Request) {
 			Data:    "",
 			Message: "Wigets not found",
 		})
-	} else {
-		json.NewEncoder(w).Encode(Response{
-			Errors:  false,
-			Data:    widgets,
-			Message: "List of all wigets",
-		})
+		return
 	}
+
+	json.NewEncoder(w).Encode(Response{
+		Errors:  false,
+		Data:    widgets,
+		Message: "List of all wigets",
+	})
+
 }
 
 // GetWidget - Listing a widget
@@ -47,13 +49,15 @@ func GetWidget(w http.ResponseWriter, r *http.Request) {
 			Data:    "",
 			Message: "Widget not found",
 		})
-	} else {
-		json.NewEncoder(w).Encode(Response{
-			Errors:  false,
-			Data:    widget,
-			Message: "Widget data of id " + idS,
-		})
+		return
 	}
+
+	json.NewEncoder(w).Encode(Response{
+		Errors:  false,
+		Data:    widget,
+		Message: "Widget data of id " + idS,
+	})
+
 }
 
 // CreateWidget - Creating a widget
@@ -71,20 +75,22 @@ func CreateWidget(w http.ResponseWriter, r *http.Request) {
 			Data:    "",
 			Message: "The name field must be unique",
 		})
-	} else {
-		if res, err := Models.WidgetsModel.Insert(widget); err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			Errors.CheckErr(err)
-		} else {
-			widget.ID = res.(int64)
-			w.WriteHeader(http.StatusCreated)
-			json.NewEncoder(w).Encode(Response{
-				Errors:  false,
-				Data:    widget,
-				Message: "Widget created",
-			})
-		}
+		return
 	}
+
+	if res, err := Models.WidgetsModel.Insert(widget); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		Errors.CheckErr(err)
+		return
+	}
+
+	widget.ID = res.(int64)
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(Response{
+		Errors:  false,
+		Data:    widget,
+		Message: "Widget created",
+	})
 
 }
 
@@ -104,35 +110,39 @@ func UpdateWidget(w http.ResponseWriter, r *http.Request) {
 			Data:    "",
 			Message: "Widget not found",
 		})
-	} else {
-		_ = json.NewDecoder(r.Body).Decode(&widget)
-
-		// Validate duplicate name
-		// nid is Name and ID
-		n := Models.WidgetsModel.Find("name", widget.Name)
-		count, _ := n.Count()
-		var nid Models.Widget
-		n.One(&nid)
-		if count > 0 && widget.ID != nid.ID {
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(Response{
-				Errors:  true,
-				Data:    "",
-				Message: "The name field must be unique",
-			})
-		} else {
-			if err = res.Update(widget); err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
-				Errors.CheckErr(err)
-			} else {
-				json.NewEncoder(w).Encode(Response{
-					Errors:  false,
-					Data:    widget,
-					Message: "User updated",
-				})
-			}
-		}
+		return
 	}
+
+	_ = json.NewDecoder(r.Body).Decode(&widget)
+
+	// Validate duplicate name
+	// nid is Name and ID
+	n := Models.WidgetsModel.Find("name", widget.Name)
+	count, _ := n.Count()
+	var nid Models.Widget
+	n.One(&nid)
+	if count > 0 && widget.ID != nid.ID {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: "The name field must be unique",
+		})
+		return
+	}
+
+	if err = res.Update(widget); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		Errors.CheckErr(err)
+		return
+	}
+
+	json.NewEncoder(w).Encode(Response{
+		Errors:  false,
+		Data:    widget,
+		Message: "User updated",
+	})
+
 }
 
 // DeleteWidget - Deleting a widget
@@ -151,18 +161,21 @@ func DeleteWidget(w http.ResponseWriter, r *http.Request) {
 			Data:    "",
 			Message: "Widget not found",
 		})
-	} else {
-		_ = json.NewDecoder(r.Body).Decode(&widget)
-
-		if err = res.Delete(); err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			Errors.CheckErr(err)
-		} else {
-			json.NewEncoder(w).Encode(Response{
-				Errors:  false,
-				Data:    widget,
-				Message: "Widget deleted",
-			})
-		}
+		return
 	}
+
+	_ = json.NewDecoder(r.Body).Decode(&widget)
+
+	if err = res.Delete(); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		Errors.CheckErr(err)
+		return
+	}
+
+	json.NewEncoder(w).Encode(Response{
+		Errors:  false,
+		Data:    widget,
+		Message: "Widget deleted",
+	})
+
 }
