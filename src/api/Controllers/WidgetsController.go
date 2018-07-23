@@ -78,7 +78,9 @@ func CreateWidget(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if res, err := Models.WidgetsModel.Insert(widget); err != nil {
+	res, err := Models.WidgetsModel.Insert(widget)
+
+	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		Errors.CheckErr(err)
 		return

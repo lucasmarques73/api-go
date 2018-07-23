@@ -83,7 +83,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if res, err := Models.UsersModel.Insert(user); err != nil {
+	res, err := Models.UsersModel.Insert(user)
+
+	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		Errors.CheckErr(err)
 		return
