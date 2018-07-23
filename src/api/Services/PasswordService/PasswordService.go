@@ -1,6 +1,8 @@
 package PasswordService
 
 import (
+	"fmt"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -9,7 +11,8 @@ const (
 )
 
 func IsValid(hash string, password string) bool {
-	if bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)); err != nil {
+		fmt.Println(err)
 		return false
 	}
 	return true

@@ -8,7 +8,7 @@ type User struct {
 	Name   string `validate:"required" db:"name" json:"name,omitempty"`
 	Avatar string `db:"avatar" json:"avatar,omitempty"`
 	Email  string `validate:"required" db:"email" json:"email,omitempty"`
-	Pass   string `validate:"required" db:"pass" json:"-"`
+	Pass   string `validate:"required" db:"pass" json:"pass"`
 }
 
 // UsersModel Ppinting to the "users" table
