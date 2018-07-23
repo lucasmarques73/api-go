@@ -2,9 +2,7 @@ package JWTService
 
 import (
 	"api/Models"
-	"crypto/rsa"
 	"errors"
-	"io/ioutil"
 	"log"
 	"time"
 
@@ -12,52 +10,37 @@ import (
 )
 
 const (
-	privKeyPath  = "./keys/app.rsa"     // openssl genrsa -out app.rsa keysize
-	pubKeyPath   = "./keys/app.rsa.pub" // openssl rsa -in app.rsa -pubout > app.rsa.pub
 	HOURS_IN_DAY = 24
 	DAYS_IN_WEEK = 7
 )
 
-var (
-	verifyKey *rsa.PublicKey
-	signKey   *rsa.PrivateKey
-)
-
-func init() {
-	signBytes, err := ioutil.ReadFile(privKeyPath)
-	if err != nil {
-		panic(err)
-	}
-	signKey, err = jwt.ParseRSAPrivateKeyFromPEM(signBytes)
-	if err != nil {
-		panic(err)
-	}
-	verifyBytes, err := ioutil.ReadFile(pubKeyPath)
-	if err != nil {
-		panic(err)
-	}
-	verifyKey, err = jwt.ParseRSAPublicKeyFromPEM(verifyBytes)
-	if err != nil {
-		panic(err)
-	}
+type MyCustomClaims struct {
+	id int64 `json:"id"`
+	jwt.StandardClaims
 }
 
-func GetToken(id int64) string {
-	token := jwt.New(jwt.SigningMethodRS512)
-	claims := make(jwt.MapClaims)
-	claims["exp"] = time.Now().Add(time.Hour * HOURS_IN_DAY * DAYS_IN_WEEK).Unix()
-	claims["iat"] = time.Now().Unix()
-	claims["id"] = id
-	token.Claims = claims
+var MySigningKey = []byte("K0xOQwFEr4WDgRW")
 
-	tokenString, _ := token.SignedString(signKey)
+func GetToken(id int64) string {
+
+	claims := MyCustomClaims{
+		id,
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * HOURS_IN_DAY * DAYS_IN_WEEK).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, _ := token.SignedString(MySigningKey)
 
 	return tokenString
 }
 
 func IsTokenValid(val string) (int64, error) {
 	token, err := jwt.Parse(val, func(token *jwt.Token) (interface{}, error) {
-		return verifyKey, nil
+		return MySigningKey, nil
 	})
 
 	switch err.(type) {
@@ -66,16 +49,16 @@ func IsTokenValid(val string) (int64, error) {
 			return 0, errors.New("Token is invalid")
 		}
 
-		var user_id int64
+		var userId int64
 
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok {
 			return 0, errors.New("Token is invalid")
 		}
 
-		user_id = int64(claims["id"].(float64))
+		userId = int64(claims["id"].(float64))
 
-		return user_id, nil
+		return userId, nil
 	case *jwt.ValidationError:
 		vErr := err.(*jwt.ValidationError)
 

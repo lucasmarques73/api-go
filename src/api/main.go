@@ -2,6 +2,8 @@ package main
 
 import (
 	"api/Controllers"
+	"api/Services/JWTService"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -34,9 +36,16 @@ func main() {
 
 	mw := jwtmiddleware.New(jwtmiddleware.Options{
 		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
-			return []byte("secret"), nil
+			return JWTService.MySigningKey, nil
 		},
-		SigningMethod: jwt.SigningMethodRS512,
+		SigningMethod: jwt.SigningMethodHS256,
+		ErrorHandler: func(w http.ResponseWriter, r *http.Request, err string) {
+			json.NewEncoder(w).Encode(Controllers.Response{
+				Errors:  true,
+				Data:    "",
+				Message: err,
+			})
+		},
 	})
 
 	an := negroni.New(negroni.HandlerFunc(mw.HandlerWithNext), negroni.Wrap(routesProtected))
