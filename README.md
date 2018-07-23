@@ -29,12 +29,15 @@ GET `/auth/user` http://localhost/auth/user
 GET `/users` http://localhost/users
 
 #### Data from a user
+
 GET `/users/:id` http://localhost/users/:id
 
 #### Creating new user
+To create user use the struct `User` below  
 POST `/users` http://localhost/users
 
 #### Updating existing users
+To update user use the struct `User` below  
 PUT `/users/:id` http://localhost/users/:id
 
 #### Deleting existing users
@@ -47,9 +50,11 @@ GET `/widgets` http://localhost/widgets
 GET `/widgets/:id` http://localhost/widgets/:id
 
 #### Creating new widget
+To create widget use the struct `Widget` below  
 POST `/widgets` http://localhost/widgets
 
 #### Updating existing widgets
+To update widget use the struct `Widget` below  
 PUT `/widgets/:id` http://localhost/widgets/:id
 
 #### Deleting existing widgets
@@ -82,6 +87,7 @@ DELETE `/widgets/:id` http://localhost/widgets/:id
     "name": "Helen Lee",
     "color": "Aquamarine",
     "price": 60.4,
+    "melts": true
     "inventory": 12
 }
 ```
