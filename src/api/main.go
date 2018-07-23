@@ -22,6 +22,8 @@ func main() {
 	routes.HandleFunc("/", home)
 	routes.HandleFunc("/auth/login", Controllers.Login).Methods("POST")
 
+	routesProtected.HandleFunc("/auth/user", Controllers.GetAuthUser).Methods("GET")
+
 	routesProtected.HandleFunc("/users", Controllers.GetAllUsers).Methods("GET")
 	routesProtected.HandleFunc("/users", Controllers.CreateUser).Methods("POST")
 	routesProtected.HandleFunc("/users/{id}", Controllers.GetUser).Methods("GET")

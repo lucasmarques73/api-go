@@ -5,6 +5,7 @@ import (
 	"api/Services/GetEnvData"
 	"errors"
 	"log"
+	"strconv"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -16,7 +17,7 @@ const (
 )
 
 type MyCustomClaims struct {
-	id int64 `json:"id"`
+	ID int64 `json:"id"`
 	jwt.StandardClaims
 }
 
@@ -36,6 +37,7 @@ func GetToken(id int64) string {
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * HOURS_IN_DAY * DAYS_IN_WEEK).Unix(),
 			IssuedAt:  time.Now().Unix(),
+			Id:        strconv.Itoa(int(id)),
 		},
 	}
 
@@ -47,7 +49,7 @@ func GetToken(id int64) string {
 }
 
 func IsTokenValid(val string) (int64, error) {
-	token, err := jwt.Parse(val, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(val, &MyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return MySigningKey, nil
 	})
 
@@ -57,25 +59,26 @@ func IsTokenValid(val string) (int64, error) {
 			return 0, errors.New("Token is invalid")
 		}
 
-		var userId int64
+		var userID int64
 
-		claims, ok := token.Claims.(jwt.MapClaims)
+		claims, ok := token.Claims.(*MyCustomClaims)
+
 		if !ok {
 			return 0, errors.New("Token is invalid")
 		}
 
-		userId = int64(claims["id"].(float64))
+		userID = claims.ID
 
-		return userId, nil
+		return userID, nil
 	case *jwt.ValidationError:
 		vErr := err.(*jwt.ValidationError)
 
 		switch vErr.Errors {
 		case jwt.ValidationErrorExpired:
-			return 0, errors.New("Token Expired, get a new one.")
+			return 0, errors.New("Token Expired, get a new one")
 		default:
 			log.Println(vErr)
-			return 0, errors.New("Error while Parsing Token!")
+			return 0, errors.New("Error while Parsing Token")
 		}
 	default:
 		return 0, errors.New("Unable to parse token")
@@ -84,26 +87,26 @@ func IsTokenValid(val string) (int64, error) {
 
 func GetUserFromToken(tokenVal string) (user Models.User, err error) {
 	if tokenVal == "" {
-		err = errors.New("No token present.")
+		err = errors.New("No token present")
 		return
 	}
 
-	userId, err := IsTokenValid(tokenVal)
+	userID, err := IsTokenValid(tokenVal)
 	if err != nil {
-		err = errors.New("Token is invalid.")
+		err = errors.New("Token is invalid")
 		return
 	}
 
-	if userId < 1 {
-		err = errors.New("Token missing required data.")
+	if userID < 1 {
+		err = errors.New("Token missing required data")
 		return
 	}
 
 	// var user Models.User
-	res := Models.UsersModel.Find(userId)
+	res := Models.UsersModel.Find(userID)
 	err = res.One(&user)
 	if err != nil || user.ID < 1 {
-		err = errors.New("User in token does not exist in system.")
+		err = errors.New("User in token does not exist in system")
 		return
 	}
 

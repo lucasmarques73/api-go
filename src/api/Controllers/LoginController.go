@@ -76,4 +76,27 @@ func Logout() {}
 func RefreshToken() {}
 
 // GetAuthUser - Get User Authenticated
-func GetAuthUser() {}
+func GetAuthUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	ua := r.Header.Get("Authorization")
+
+	tokenString := ua[7:len(ua)]
+
+	var user Models.User
+	user, err := JWTService.GetUserFromToken(tokenString)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(Response{
+			Errors:  true,
+			Data:    "",
+			Message: err.Error(),
+		})
+	}
+
+	json.NewEncoder(w).Encode(Response{
+		Errors:  false,
+		Data:    user,
+		Message: "User that is logged in",
+	})
+}
