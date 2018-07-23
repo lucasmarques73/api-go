@@ -88,7 +88,7 @@ DELETE `/widgets/:id` http://localhost/widgets/:id
 
 ## Password Encrypt
 
-The golang.org/x/crypto/bcrypt package was used to encrypt passwords using bcrypt algorithm
+The [golang.org/x/crypto/bcrypt](golang.org/x/crypto/bcrypt) package was used to encrypt passwords using bcrypt algorithm
 
 Ex.:
 ```
