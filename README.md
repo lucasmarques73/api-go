@@ -20,7 +20,7 @@ POST `/auth/login` http://localhost/auth/login
 ### Protected via JWT
 
 To access add in header
-` Bearer Token :token`
+`Authorization: Bearer :token`
 
 #### Authenticated user data
 GET `/auth/user` http://localhost/auth/user
