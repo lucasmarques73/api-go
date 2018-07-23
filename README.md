@@ -18,6 +18,9 @@ POST `/auth/login` http://localhost/auth/login
 
 ### Protected via JWT
 
+To access add in header
+` Bearer Token :token`
+
 #### List of users
 GET `/users` http://localhost/users
 
