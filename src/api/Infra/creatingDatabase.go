@@ -1,8 +1,8 @@
 package main
 
 import (
-	"api/Db"
 	"api/Errors"
+	"api/Services/GetEnvData"
 	"api/Services/PasswordService"
 	"database/sql"
 	"fmt"
@@ -35,8 +35,8 @@ var widgetsTableSeedSQL = `INSERT INTO widgets (name,color,price,melts,inventory
 
 func main() {
 
-	var ds Db.DbSettings
-	ds = Db.GetEnvData(ds)
+	var ds GetEnvData.Settings
+	ds = GetEnvData.GetEnvData(ds)
 
 	var conStr = "host=" + ds.DbHost + " port=" + ds.DbPort + " user=" + ds.DbUser + " password=" + ds.DbPassword + " dbname=" + ds.DbName + " sslmode=disable"
 	var db, err = sql.Open("postgres", conStr)
@@ -67,15 +67,17 @@ func createTableWidgets(db *sql.DB) {
 
 func usersTableSeed(db *sql.DB) {
 
+	pass, _ := PasswordService.Encrypt("secret")
+	avatar := "https://loremflickr.com/320/240/cats"
+
 	for index := 0; index < 5; index++ {
 		name := fake.FullName()
-		avatar := "https://loremflickr.com/320/240/cats"
 		email := fake.EmailAddress()
-		pass, _ := PasswordService.Encrypt("secret")
 
 		exec(db, "INSERT INTO users (name,avatar,email,pass) VALUES ('"+name+"','"+avatar+"','"+email+"','"+pass+"')")
-
 	}
+
+	exec(db, "INSERT INTO users (name,avatar,email,pass) VALUES ('User','"+avatar+"','user@user.com','"+pass+"')")
 }
 
 func widgetsTableSeed(db *sql.DB) {
@@ -88,6 +90,5 @@ func widgetsTableSeed(db *sql.DB) {
 		inventory := strconv.Itoa(randomdata.Number(50))
 
 		exec(db, "INSERT INTO widgets (name,color,price,melts,inventory) VALUES ('"+name+"','"+color+"','"+price+"','"+melts+"','"+inventory+"')")
-
 	}
 }

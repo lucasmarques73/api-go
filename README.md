@@ -14,6 +14,7 @@
 #### Home
 GET `/` http://localhost/
 #### Login
+To get the token use the struct `Login` below  
 POST `/auth/login` http://localhost/auth/login
 
 ### Protected via JWT
@@ -44,7 +45,7 @@ PUT `/widgets/:id` http://localhost/widgets/:id
 ### Login
 ```JSON
 {
- "email": "email@example.com",
+ "email": "user@user.com",
  "password":"secret"
 }
 ```

@@ -2,6 +2,7 @@ package JWTService
 
 import (
 	"api/Models"
+	"api/Services/GetEnvData"
 	"errors"
 	"log"
 	"time"
@@ -19,7 +20,14 @@ type MyCustomClaims struct {
 	jwt.StandardClaims
 }
 
-var MySigningKey = []byte("K0xOQwFEr4WDgRW")
+var MySigningKey []byte
+
+func init() {
+	var s GetEnvData.Settings
+	s = GetEnvData.GetEnvData(s)
+
+	MySigningKey = []byte(s.JwtSecret)
+}
 
 func GetToken(id int64) string {
 
