@@ -12,15 +12,17 @@ import (
 )
 
 const (
-	HOURS_IN_DAY = 24
-	DAYS_IN_WEEK = 7
+	hoursInDay = 24
+	daysInWeek = 7
 )
 
+// MyCustomClaims is my custom claims
 type MyCustomClaims struct {
 	ID int64 `json:"id"`
 	jwt.StandardClaims
 }
 
+// MySigningKey is key JWT
 var MySigningKey []byte
 
 func init() {
@@ -30,12 +32,13 @@ func init() {
 	MySigningKey = []byte(s.JwtSecret)
 }
 
+// GetToken - Generate token
 func GetToken(id int64) string {
 
 	claims := MyCustomClaims{
 		id,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * HOURS_IN_DAY * DAYS_IN_WEEK).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * hoursInDay * daysInWeek).Unix(),
 			IssuedAt:  time.Now().Unix(),
 			Id:        strconv.Itoa(int(id)),
 		},
@@ -48,6 +51,7 @@ func GetToken(id int64) string {
 	return tokenString
 }
 
+// IsTokenValid - Token is valid?
 func IsTokenValid(val string) (int64, error) {
 	token, err := jwt.ParseWithClaims(val, &MyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return MySigningKey, nil
@@ -85,6 +89,7 @@ func IsTokenValid(val string) (int64, error) {
 	}
 }
 
+// GetUserFromToken - Get data from a authenticated user
 func GetUserFromToken(tokenVal string) (user Models.User, err error) {
 	if tokenVal == "" {
 		err = errors.New("No token present")
