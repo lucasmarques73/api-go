@@ -22,16 +22,28 @@ POST `/auth/login` http://localhost/auth/login
 To access add in header
 ` Bearer Token :token`
 
+#### Authenticated user data
+GET `/auth/user` http://localhost/auth/user
+
 #### List of users
 GET `/users` http://localhost/users
 
-#### Data of one user
+#### Data from a user
 GET `/users/:id` http://localhost/users/:id
+
+#### Creating new user
+POST `/users` http://localhost/users
+
+#### Updating existing users
+PUT `/users/:id` http://localhost/users/:id
+
+#### Deleting existing users
+DELETE `/users/:id` http://localhost/users/:id
 
 #### List of widgets
 GET `/widgets` http://localhost/widgets
 
-#### Data of one widget
+#### Data from a widget
 GET `/widgets/:id` http://localhost/widgets/:id
 
 #### Creating new widget
@@ -39,6 +51,9 @@ POST `/widgets` http://localhost/widgets
 
 #### Updating existing widgets
 PUT `/widgets/:id` http://localhost/widgets/:id
+
+#### Deleting existing widgets
+DELETE `/widgets/:id` http://localhost/widgets/:id
 
 ## Structs
 
