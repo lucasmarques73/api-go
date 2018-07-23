@@ -5,7 +5,6 @@ volumes:
 services:
   db:
     image: postgres:10
-    container_name: api-go-db
     ports:
       - "5432:5432"
     environment: 
@@ -16,12 +15,11 @@ services:
       - postgres-data:/var/lib/postgresql/data
   adminer:
     image: adminer
-    container_name: api-go-adminer
     ports:
       - "8080:8080"
   # web:
   #   build: .
-  #   container_name: api-go-web
+  #
   #   volumes: 
   #     - ./src:/go/src
   #   ports:
@@ -30,7 +28,6 @@ services:
   #     - db
   web:
     image: golang:1.10-alpine3.7
-    container_name: api-go-web
     volumes: 
       - ./src:/go/src
       - .env:/go/src/api/.env
