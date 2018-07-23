@@ -87,7 +87,7 @@ DELETE `/widgets/:id` http://localhost/widgets/:id
     "name": "Helen Lee",
     "color": "Aquamarine",
     "price": 60.4,
-    "melts": true
+    "melts": true,
     "inventory": 12
 }
 ```
