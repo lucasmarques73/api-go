@@ -17,23 +17,13 @@ services:
     image: adminer
     ports:
       - "8080:8080"
-  # web:
-  #   build: .
-  #
-  #   volumes: 
-  #     - ./src:/go/src
-  #   ports:
-  #     - "80:80"
-  #   depends_on:
-  #     - db
   web:
-    image: golang:1.10-alpine3.7
+    build: .  
     volumes: 
       - ./src:/go/src
       - .env:/go/src/api/.env
     ports:
       - "80:80"
-    working_dir: /go/src/api
     command: go run main.go
     depends_on:
       - db
