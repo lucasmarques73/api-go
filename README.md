@@ -99,3 +99,4 @@ The [golang.org/x/crypto/bcrypt](golang.org/x/crypto/bcrypt) package was used to
 Ex.:
 ```
 secret === $2a$10$4Ndqo.lqBHhaZUTPc2L7veU1Xb9JBHGjD74CfSHl2aeOxN3tx1jD2
+```
