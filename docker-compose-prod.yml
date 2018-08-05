@@ -12,8 +12,6 @@ volumes:
 services:
   api-go-db:
     image: postgres:10
-    ports:
-      - "5432:5432"
     environment: 
       - "POSTGRES_DB=${DB_DATABASE}"
       - "POSTGRES_USER=${DB_USER}"
@@ -22,10 +20,12 @@ services:
       - postgres-data:/var/lib/postgresql/data
   api-go:
     build: .  
-    volumes: 
+    volumes:
       - ./src:/go/src
       - .env:/go/src/api/.env
     command: go run main.go
+    links:
+      - api-go-db
     depends_on:
       - api-go-db
     labels:
