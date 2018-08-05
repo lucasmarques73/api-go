@@ -3,7 +3,7 @@ volumes:
   postgres-data:
     driver: "local"
 services:
-  db:
+  api-go-db:
     image: postgres:10
     ports:
       - "5432:5432"
@@ -17,7 +17,7 @@ services:
     image: adminer
     ports:
       - "8080:8080"
-  web:
+  api-go:
     build: .  
     volumes: 
       - ./src:/go/src
@@ -26,4 +26,4 @@ services:
       - "80:80"
     command: go run main.go
     depends_on:
-      - db
+      - api-go-db

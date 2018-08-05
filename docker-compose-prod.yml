@@ -18,8 +18,12 @@ services:
     volumes: 
       - ./src:/go/src
       - .env:/go/src/api/.env
-    ports:
-      - "80:80"
     command: go run main.go
     depends_on:
-      - db
+      - api-go-db
+    labels:
+      - traefik.enable=true
+      - traefik.backend=api-go
+      - traefik.frontend.rule=Host:api-go.lucasmarques73.com.br
+      - traefik.docker.network=proxy
+      - traefik.port=80
