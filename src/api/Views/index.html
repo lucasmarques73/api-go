@@ -1,12 +1,148 @@
+
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Api</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-    <h1>Go</h1>
-</body>
+    <style>
+    .highlight{color:#d0d0d0}.highlight table td{padding:5px}.highlight table pre{margin:0}.highlight .w{color:#d0d0d0}.highlight .err{color:#151515;background-color:#ac4142}.highlight .c,.highlight .cd,.highlight .cm,.highlight .c1,.highlight .cs{color:#888}.highlight .cp{color:#f4bf75}.highlight .o,.highlight .ow{color:#f4bf75}.highlight .p,.highlight .pi{color:#d0d0d0}.highlight .gi{color:#90a959}.highlight .gd{color:#ac4142}.highlight .gh{color:#6a9fb5;font-weight:bold}.highlight .k,.highlight .kn,.highlight .kp,.highlight .kr,.highlight .kv{color:#aa759f}.highlight .kc,.highlight .kt,.highlight .kd{color:#d28445}.highlight .s,.highlight .sb,.highlight .sc,.highlight .sd,.highlight .s2,.highlight .sh,.highlight .sx,.highlight .s1{color:#90a959}.highlight .sr{color:#75b5aa}.highlight .si,.highlight .se{color:#8f5536}.highlight .nt,.highlight .nn,.highlight .nc,.highlight .no{color:#f4bf75}.highlight .na{color:#6a9fb5}.highlight .m,.highlight .mf,.highlight .mh,.highlight .mi,.highlight .il,.highlight .mo,.highlight .mb,.highlight .mx{color:#90a959}.highlight .ss{color:#90a959}body{margin:0;padding:0;background:#151515 url("../images/bkg.png") 0 0;color:#eaeaea;font-size:16px;line-height:1.5;font-family:Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace}.container{width:90%;max-width:1000px;margin:0 auto}section{display:block;margin:0 0 20px 0}h1,h2,h3,h4,h5,h6{margin:0 0 20px}li{line-height:1.4}header{background:rgba(0,0,0,0.1);width:100%;border-bottom:1px dashed #b5e853;padding:20px 0;margin:0 0 40px 0}header h1{font-size:30px;line-height:1.5;margin:0 0 0 -40px;font-weight:bold;font-family:Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;color:#b5e853;text-shadow:0 1px 1px rgba(0,0,0,0.1),0 0 5px rgba(181,232,83,0.1),0 0 10px rgba(181,232,83,0.1);letter-spacing:-1px;-webkit-font-smoothing:antialiased}header h1:before{content:"./ ";font-size:24px}header h2{font-size:18px;font-weight:300;color:#666}#downloads .btn{display:inline-block;text-align:center;margin:0}#main_content{width:100%;-webkit-font-smoothing:antialiased}section img{max-width:100%}h1,h2,h3,h4,h5,h6{font-weight:normal;font-family:Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;color:#b5e853;letter-spacing:-0.03em;text-shadow:0 1px 1px rgba(0,0,0,0.1),0 0 5px rgba(181,232,83,0.1),0 0 10px rgba(181,232,83,0.1)}#main_content h1{font-size:30px}#main_content h2{font-size:24px}#main_content h3{font-size:18px}#main_content h4{font-size:14px}#main_content h5{font-size:12px;text-transform:uppercase;margin:0 0 5px 0}#main_content h6{font-size:12px;text-transform:uppercase;color:#999;margin:0 0 5px 0}dt{font-style:italic;font-weight:bold}ul li{list-style-image:url("../images/bullet.png")}blockquote{color:#aaa;padding-left:10px;border-left:1px dotted #666}pre{background:rgba(0,0,0,0.9);border:1px solid rgba(255,255,255,0.15);padding:10px;font-size:16px;color:#b5e853;border-radius:2px;word-wrap:normal;overflow:auto;overflow-y:hidden}code.highlighter-rouge{background:rgba(0,0,0,0.9);border:1px solid rgba(255,255,255,0.15);padding:0px 3px;margin:0px -3px;color:#aa759f;border-radius:2px}table{width:100%;margin:0 0 20px 0}th{text-align:left;border-bottom:1px dashed #b5e853;padding:5px 10px}td{padding:5px 10px}hr{height:0;border:0;border-bottom:1px dashed #b5e853;color:#b5e853}.btn{display:inline-block;background:-webkit-linear-gradient(top, rgba(40,40,40,0.3), rgba(35,35,35,0.3) 50%, rgba(10,10,10,0.3) 50%, rgba(0,0,0,0.3));padding:8px 18px;border-radius:50px;border:2px solid rgba(0,0,0,0.7);border-bottom:2px solid rgba(0,0,0,0.7);border-top:2px solid #000;color:rgba(255,255,255,0.8);font-family:Helvetica, Arial, sans-serif;font-weight:bold;font-size:13px;text-decoration:none;text-shadow:0 -1px 0 rgba(0,0,0,0.75);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)}.btn:hover{background:-webkit-linear-gradient(top, rgba(40,40,40,0.6), rgba(35,35,35,0.6) 50%, rgba(10,10,10,0.8) 50%, rgba(0,0,0,0.8))}.btn .icon{display:inline-block;width:16px;height:16px;margin:1px 8px 0 0;float:left}.btn-github .icon{opacity:0.6;background:url("../images/blacktocat.png") 0 0 no-repeat}a{color:#63c0f5;text-shadow:0 0 5px rgba(104,182,255,0.5)}.cf:before,.cf:after{content:"";display:table}.cf:after{clear:both}.cf{zoom:1}
+    </style>
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>API in GO | api-go</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="API in GO" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://api-go.lucasmarques73.com.br/" />
+<meta property="og:url" content="https://api-go.lucasmarques73.com.br/" />
+<meta property="og:site_name" content="api-go" />
+<script type="application/ld+json">
+{"name":"api-go","@type":"WebSite","url":"https://api-go.lucasmarques73.com.br/","headline":"API in GO","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>api-go</h1>
+        <h2></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/lucasmarques73/api-go" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1 id="api-in-go">API in GO</h1>
+
+<h2 id="how-to-use">How to use</h2>
+
+<ul>
+  <li><code class="highlighter-rouge">git clone https://github.com/lucasmarques73/api-go.git</code></li>
+  <li><code class="highlighter-rouge">cp .env.examlple .env</code></li>
+  <li><code class="highlighter-rouge">docker-compose up --build</code></li>
+  <li><code class="highlighter-rouge">docker-compose exec web go run Infra/creatingDatabase.go</code></li>
+</ul>
+
+<h2 id="routes">Routes</h2>
+
+<h3 id="unprotected">Unprotected</h3>
+
+<h4 id="home">Home</h4>
+<p>GET <code class="highlighter-rouge">/</code> http://localhost/</p>
+<h4 id="login">Login</h4>
+<p>To get the token use the struct <code class="highlighter-rouge">Login</code> below<br />
+POST <code class="highlighter-rouge">/auth/login</code> http://localhost/auth/login</p>
+
+<h3 id="protected-via-jwt">Protected via JWT</h3>
+
+<p>To access add in header
+<code class="highlighter-rouge">Authorization: Bearer :token</code></p>
+
+<h4 id="authenticated-user-data">Authenticated user data</h4>
+<p>GET <code class="highlighter-rouge">/auth/user</code> http://localhost/auth/user</p>
+
+<h4 id="list-of-users">List of users</h4>
+<p>GET <code class="highlighter-rouge">/users</code> http://localhost/users</p>
+
+<h4 id="data-from-a-user">Data from a user</h4>
+
+<p>GET <code class="highlighter-rouge">/users/:id</code> http://localhost/users/:id</p>
+
+<h4 id="creating-new-user">Creating new user</h4>
+<p>To create user use the struct <code class="highlighter-rouge">User</code> below<br />
+POST <code class="highlighter-rouge">/users</code> http://localhost/users</p>
+
+<h4 id="updating-existing-users">Updating existing users</h4>
+<p>To update user use the struct <code class="highlighter-rouge">User</code> below<br />
+PUT <code class="highlighter-rouge">/users/:id</code> http://localhost/users/:id</p>
+
+<h4 id="deleting-existing-users">Deleting existing users</h4>
+<p>DELETE <code class="highlighter-rouge">/users/:id</code> http://localhost/users/:id</p>
+
+<h4 id="list-of-widgets">List of widgets</h4>
+<p>GET <code class="highlighter-rouge">/widgets</code> http://localhost/widgets</p>
+
+<h4 id="data-from-a-widget">Data from a widget</h4>
+<p>GET <code class="highlighter-rouge">/widgets/:id</code> http://localhost/widgets/:id</p>
+
+<h4 id="creating-new-widget">Creating new widget</h4>
+<p>To create widget use the struct <code class="highlighter-rouge">Widget</code> below<br />
+POST <code class="highlighter-rouge">/widgets</code> http://localhost/widgets</p>
+
+<h4 id="updating-existing-widgets">Updating existing widgets</h4>
+<p>To update widget use the struct <code class="highlighter-rouge">Widget</code> below<br />
+PUT <code class="highlighter-rouge">/widgets/:id</code> http://localhost/widgets/:id</p>
+
+<h4 id="deleting-existing-widgets">Deleting existing widgets</h4>
+<p>DELETE <code class="highlighter-rouge">/widgets/:id</code> http://localhost/widgets/:id</p>
+
+<h2 id="structs">Structs</h2>
+
+<h3 id="login-1">Login</h3>
+<pre><code class="language-JSON">{
+ "email": "user@user.com",
+ "password":"secret"
+}
+</code></pre>
+
+<h3 id="user">User</h3>
+
+<pre><code class="language-JSON">{
+    "name": "Todd Weaver",
+    "avatar": "https://loremflickr.com/320/240/cats",
+    "email": "email@example.com",
+    "pass": "secret"
+}
+</code></pre>
+
+<h3 id="widget">Widget</h3>
+<pre><code class="language-JSON">{
+    "name": "Helen Lee",
+    "color": "Aquamarine",
+    "price": 60.4,
+    "melts": true,
+    "inventory": 12
+}
+</code></pre>
+
+<h2 id="password-encrypt">Password Encrypt</h2>
+
+<p>The <a href="golang.org/x/crypto/bcrypt">golang.org/x/crypto/bcrypt</a> package was used to encrypt passwords using bcrypt algorithm</p>
+
+<p>Ex.:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>secret === $2a$10$4Ndqo.lqBHhaZUTPc2L7veU1Xb9JBHGjD74CfSHl2aeOxN3tx1jD2
+</code></pre></div></div>
+
+      </section>
+    </div>
+
+    
+  </body>
 </html>
