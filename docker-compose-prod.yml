@@ -28,9 +28,17 @@ services:
       - api-go-db
     depends_on:
       - api-go-db
+  api-go-server:
+    image: "nginx:1.15.2-alpine"
+    volumes:
+       - "./api-go.conf:/etc/nginx/conf.d/default.conf"
+    links:
+      - api-go
+    depends_on:
+      - api-go
     labels:
       - traefik.enable=true
-      - traefik.backend=api-go
+      - traefik.backend=api-go-server
       - traefik.frontend.rule=Host:api-go.lucasmarques73.com.br
       - traefik.docker.network=proxy
       - traefik.port=80
