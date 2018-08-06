@@ -28,6 +28,8 @@ services:
       - api-go-db
     depends_on:
       - api-go-db
+    networks:
+      - internal
   api-go-server:
     image: "nginx:1.15.2-alpine"
     volumes:
