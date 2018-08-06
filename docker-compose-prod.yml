@@ -18,6 +18,8 @@ services:
       - "POSTGRES_PASSWORD=${DB_PASSWORD}"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - internal
   api-go:
     build: .  
     volumes:
